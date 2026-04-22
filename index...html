@@ -1,0 +1,1006 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.app{display:flex;height:100vh;min-height:600px;direction:rtl;background:var(--color-background-tertiary)}
+.sidebar{width:200px;background:var(--color-background-primary);border-left:0.5px solid var(--color-border-tertiary);display:flex;flex-direction:column;flex-shrink:0}
+.logo{padding:14px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.logo-mark{width:32px;height:32px;border-radius:8px;background:#00C9A0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:500;font-size:15px}
+.logo-text{font-size:16px;font-weight:500;margin-top:4px}
+.logo-sub{font-size:11px;color:var(--color-text-tertiary)}
+nav{flex:1;padding:8px;overflow-y:auto}
+.nav-btn{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border-radius:var(--border-radius-md);border:none;background:transparent;color:var(--color-text-secondary);font-size:12px;font-weight:400;cursor:pointer;text-align:right;font-family:var(--font-sans);margin-bottom:2px;transition:background .15s}
+.nav-btn:hover{background:var(--color-background-secondary)}
+.nav-btn.active{background:var(--color-background-secondary);color:var(--color-text-primary);font-weight:500}
+.nav-dot{width:6px;height:6px;border-radius:50%;margin-right:auto;flex-shrink:0}
+.nav-icon{font-size:14px;width:16px;text-align:center}
+.user-area{padding:10px;border-top:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:8px}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--color-background-info);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--color-text-info);flex-shrink:0}
+.main{flex:1;overflow-y:auto;padding:20px}
+.screen{display:none;animation:fadeIn .2s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.page-header{margin-bottom:16px}
+.page-tag{font-size:10px;color:var(--color-text-tertiary);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.page-title{font-size:20px;font-weight:500;color:var(--color-text-primary)}
+.page-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px}
+.metric{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.metric-val{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.metric-lbl{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.section-label{font-size:10px;color:var(--color-text-tertiary);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;font-weight:500}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500}
+.badge-green{background:var(--color-background-success);color:var(--color-text-success)}
+.badge-red{background:var(--color-background-danger);color:var(--color-text-danger)}
+.badge-yellow{background:var(--color-background-warning);color:var(--color-text-warning)}
+.badge-blue{background:var(--color-background-info);color:var(--color-text-info)}
+.badge-gray{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.skill-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.skill-row:last-child{border-bottom:none}
+.bar-track{height:4px;background:var(--color-background-secondary);border-radius:2px;flex:1;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;transition:width .8s ease}
+.chart-wrap{position:relative;width:100%}
+.tab-row{display:flex;gap:2px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:3px;margin-bottom:14px;width:fit-content}
+.tab{padding:6px 14px;border-radius:6px;font-size:11px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--color-text-secondary);font-family:var(--font-sans);transition:all .15s}
+.tab.active{background:var(--color-background-primary);color:var(--color-text-primary);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.btn-primary{padding:9px 16px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-sans);transition:all .15s}
+.btn-primary:hover{background:var(--color-background-secondary)}
+.btn-accent{padding:9px 16px;border-radius:var(--border-radius-md);border:none;background:#00C9A0;color:#fff;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-sans)}
+.input-field{width:100%;padding:8px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);font-size:13px;outline:none;font-family:var(--font-sans)}
+.msg-success{padding:10px 14px;border-radius:var(--border-radius-md);background:var(--color-background-success);color:var(--color-text-success);font-size:12px;margin-bottom:12px}
+.msg-error{padding:10px 14px;border-radius:var(--border-radius-md);background:var(--color-background-danger);color:var(--color-text-danger);font-size:12px;margin-bottom:12px}
+.cred-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .2s}
+.cred-card:hover{border-color:var(--color-border-primary)}
+.cred-card.expanded{border-color:var(--color-border-info)}
+.row-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.row-item:last-child{border-bottom:none}
+.spinner{width:14px;height:14px;border:2px solid var(--color-border-tertiary);border-top-color:#00C9A0;border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.terminal{background:#0A0E14;border-radius:var(--border-radius-lg);padding:14px;font-family:var(--font-mono);font-size:11px;line-height:1.8;min-height:200px;overflow-y:auto;max-height:280px}
+.terminal-log{color:#64748B}
+.terminal-ok{color:#10B981}
+.terminal-info{color:#3B82F6}
+.terminal-done{color:#00C9A0}
+.job-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);margin-bottom:6px;transition:all .3s}
+.job-item.running{border-color:#F59E0B;background:var(--color-background-warning)}
+.job-item.success{border-color:#10B981;background:var(--color-background-success)}
+.job-dot{width:24px;height:24px;border-radius:6px;border:1.5px solid var(--color-border-secondary);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.interview-q{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:14px;margin-bottom:12px;border-right:3px solid #00C9A0;border-radius:0 var(--border-radius-lg) var(--border-radius-lg) 0}
+.waveform{display:flex;gap:3px;align-items:center;justify-content:center;height:40px}
+.wave-bar{width:4px;border-radius:2px;background:#EF4444;animation:wave 0.6s ease-in-out infinite alternate}
+@keyframes wave{from{height:20%}to{height:85%}}
+.score-ring-wrap{position:relative;width:64px;height:64px;flex-shrink:0}
+</style>
+
+<div class="app">
+  <div class="sidebar">
+    <div class="logo">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <div class="logo-mark">و</div>
+        <div>
+          <div class="logo-text">وِجهة</div>
+          <div class="logo-sub">AI Career Platform</div>
+        </div>
+      </div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="user-area">
+      <div class="avatar">ف</div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">فيصل</div>
+        <div style="font-size:10px;color:var(--color-text-tertiary)">ARKANE AI · Pro</div>
+      </div>
+      <div class="nav-dot" style="background:#10B981;margin-right:0;margin-left:auto"></div>
+    </div>
+  </div>
+  <div class="main">
+    <div id="screens"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const SCREENS=[
+  {id:'dashboard',icon:'🏠',label:'لوحة التحكم B2C',color:'#00C9A0'},
+  {id:'twin',icon:'🧬',label:'التوأم المهني',color:'#22D3EE'},
+  {id:'ats',icon:'⚡',label:'محسّن ATS',color:'#3B82F6'},
+  {id:'b2b',icon:'🏢',label:'بوابة المؤسسات',color:'#818CF8'},
+  {id:'trust',icon:'◆',label:'Trust Layer',color:'#8247E5'},
+  {id:'final',icon:'🚀',label:'التكامل النهائي',color:'#F59E0B'},
+];
+
+let currentScreen='dashboard';
+let charts={};
+
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+
+// Build nav
+const nav=document.getElementById('nav');
+SCREENS.forEach(s=>{
+  const btn=document.createElement('button');
+  btn.className='nav-btn'+(s.id===currentScreen?' active':'');
+  btn.id='nav-'+s.id;
+  btn.innerHTML=`<span class="nav-icon">${s.icon}</span><span>${s.label}</span>${s.id===currentScreen?`<span class="nav-dot" style="background:${s.color}"></span>`:''}`;
+  btn.onclick=()=>switchScreen(s.id);
+  nav.appendChild(btn);
+});
+
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>{
+    b.classList.remove('active');
+    b.innerHTML=b.innerHTML.replace(/<span class="nav-dot"[^>]*><\/span>/,'');
+  });
+  const s=SCREENS.find(x=>x.id===id);
+  document.getElementById('nav-'+id).classList.add('active');
+  document.getElementById('nav-'+id).innerHTML+=`<span class="nav-dot" style="background:${s.color}"></span>`;
+  const scr=document.getElementById('scr-'+id);
+  scr.classList.add('active');
+  currentScreen=id;
+  if(id==='dashboard') initDashboardCharts();
+  if(id==='twin') initTwinChart();
+  if(id==='b2b') initB2BCharts();
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────
+function dashboardHTML(){return`
+<div class="page-header">
+  <div class="page-tag">B2C Dashboard</div>
+  <div class="page-title">لوحة ذكاء المسار المهني</div>
+  <div class="page-sub">آخر تحليل: منذ ٣ ساعات · 127 وظيفة محللة</div>
+</div>
+<div class="grid-4">
+  <div class="metric"><div class="metric-val" style="color:#F59E0B">67%</div><div class="metric-lbl">الجاهزية الوظيفية</div></div>
+  <div class="metric"><div class="metric-val" style="color:#EF4444">3</div><div class="metric-lbl">فجوات حرجة</div></div>
+  <div class="metric"><div class="metric-val" style="color:#3B82F6">190h</div><div class="metric-lbl">ساعات تعلم مطلوبة</div></div>
+  <div class="metric"><div class="metric-val" style="color:#00C9A0">~165</div><div class="metric-lbl">أيام للجاهزية</div></div>
+</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="section-label">خريطة المهارات الرادارية</div>
+    <div class="chart-wrap" style="height:240px"><canvas id="radarChart" role="img" aria-label="Radar chart of skill categories vs market average">مخطط رادار للمهارات</canvas></div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">
+      ${[['تقني','72%','#00C9A0'],['ذكاء ا.','28%','#EF4444'],['سحابي','35%','#EF4444'],['ناعمة','78%','#00C9A0'],['DevOps','40%','#F59E0B'],['بيانات','55%','#F59E0B']].map(([l,v,c])=>`<span style="font-size:11px;padding:2px 8px;border-radius:20px;background:${c}15;color:${c};border:0.5px solid ${c}40">${l} ${v}</span>`).join('')}
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="card">
+      <div class="section-label">مؤشر الجاهزية</div>
+      <div class="chart-wrap" style="height:140px"><canvas id="gaugeChart" role="img" aria-label="Gauge showing 67 percent job readiness">جاهزية: 67%</canvas></div>
+      <div style="margin-top:8px">
+        ${[['المهارات التقنية',72,'#00C9A0'],['التوافق مع السوق',67,'#F59E0B'],['الشهادات',40,'#3B82F6']].map(([l,v,c])=>`<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary);margin-bottom:3px"><span>${l}</span><span style="color:${c}">${v}%</span></div><div class="bar-track"><div class="bar-fill" style="width:${v}%;background:${c}"></div></div></div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-label">المهارات المفقودة</div>
+      ${[['Machine Learning','critical',80],['Docker & K8s','critical',40],['Cloud (AWS)','high',60],['LLM APIs','critical',30],['FastAPI','high',20]].map(([s,sev,h])=>`<div class="skill-row"><span style="font-size:12px;flex:1;color:var(--color-text-primary)">${s}</span><span class="badge badge-${sev==='critical'?'red':'yellow'}">${sev==='critical'?'حرجة':'عالي'}</span><span style="font-size:11px;color:var(--color-text-tertiary);font-family:var(--font-mono);width:32px;text-align:left">${h}h</span></div>`).join('')}
+    </div>
+  </div>
+</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="section-label">خريطة المسار — 30 يوم</div>
+    ${[['أساسيات ML','Coursera Week 1-2 · Python stack · مشروع تجريبي','🔥'],['تطبيقات Scikit','Scikit-learn · تصنيف البريد · تحليل عقاري',''],['Docker Basics','Dockerfile · نشر Flask · Container basics',''],['مراجعة وتقييم','GitHub update · AWS registration','']].map(([t,d,e],i)=>`<div style="display:flex;gap:10px;margin-bottom:10px"><div style="width:28px;height:28px;border-radius:6px;background:${i===0?'#00C9A015':'var(--color-background-secondary)'};border:0.5px solid ${i===0?'#00C9A0':'var(--color-border-tertiary)'};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:${i===0?'#00C9A0':'var(--color-text-secondary)'};flex-shrink:0">${i+1}</div><div><div style="font-size:12px;font-weight:500;color:var(--color-text-primary)">${e}${t}</div><div style="font-size:11px;color:var(--color-text-secondary);margin-top:2px">${d}</div></div></div>`).join('')}
+  </div>
+  <div class="card">
+    <div class="section-label">الوظائف المقترحة</div>
+    ${[['مهندس ذكاء اصطناعي','STC · الرياض',87,'18-25K'],['مطور Full-Stack','Tamara · الرياض',82,'14-20K'],['مهندس بيانات','NEOM · تبوك',74,'20-30K'],['مطور Backend','Noon · الرياض',91,'12-18K']].map(([t,c,sc,sal])=>{
+      const col=sc>=85?'#00C9A0':sc>=70?'#F59E0B':'#EF4444';
+      return`<div class="row-item"><div style="position:relative;width:40px;height:40px;flex-shrink:0"><svg width="40" height="40" style="transform:rotate(-90deg)"><circle cx="20" cy="20" r="16" fill="none" stroke="var(--color-border-tertiary)" stroke-width="3"/><circle cx="20" cy="20" r="16" fill="none" stroke="${col}" stroke-width="3" stroke-dasharray="${sc/100*100.5} 100.5" stroke-linecap="round"/></svg><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:${col}">${sc}</div></div><div style="flex:1"><div style="font-size:12px;font-weight:500">${t}</div><div style="font-size:11px;color:var(--color-text-secondary)">${c} · ${sal} ر/ش</div></div></div>`;
+    }).join('')}
+  </div>
+</div>`;}
+
+// ── CAREER TWIN ────────────────────────────────────────────────
+function twinHTML(){return`
+<div class="page-header">
+  <div class="page-tag">Digital Career Twin</div>
+  <div class="page-title">مسارك المهني خلال <span style="color:#22D3EE">5 سنوات</span></div>
+  <div class="page-sub">اختر سرعة تعلمك وشاهد كيف يتغير راتبك</div>
+</div>
+<div class="grid-3" style="margin-bottom:14px">
+  <div class="card">
+    <div class="section-label">راتبك الحالي</div>
+    <input type="range" id="salarySlider" min="4000" max="30000" step="500" value="8000" style="width:100%">
+    <div style="display:flex;justify-content:space-between;margin-top:6px">
+      <span style="font-size:10px;color:var(--color-text-tertiary)">4K</span>
+      <span style="font-size:16px;font-weight:500;color:#00C9A0" id="salaryDisplay">8,000 ر</span>
+      <span style="font-size:10px;color:var(--color-text-tertiary)">30K</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="section-label">مسار التعلم</div>
+    <div id="pathBtns" style="display:flex;gap:6px;margin-bottom:8px">
+      ${[['conservative','متحفظ','#3B82F6'],['balanced','متوازن','#00C9A0'],['aggressive','مكثف','#F59E0B']].map(([k,l,c])=>`<button onclick="selectPath('${k}')" id="pbtn-${k}" style="flex:1;padding:7px 0;border-radius:6px;font-size:11px;cursor:pointer;border:0.5px solid ${k==='balanced'?c:'var(--color-border-tertiary)'};background:${k==='balanced'?c+'15':'transparent'};color:${k==='balanced'?c:'var(--color-text-secondary)'};font-family:var(--font-sans);transition:all .15s">${l}</button>`).join('')}
+    </div>
+    <div id="pathDesc" style="font-size:11px;color:var(--color-text-secondary)">10h/أسبوع · الخيار الأمثل</div>
+  </div>
+  <div class="card">
+    <div class="grid-2" style="gap:8px;margin-bottom:0">
+      <div><div style="font-size:10px;color:var(--color-text-tertiary);margin-bottom:3px">راتب 5 سنوات</div><div id="finalSal" style="font-size:18px;font-weight:500;color:#00C9A0">19.2k ر</div></div>
+      <div><div style="font-size:10px;color:var(--color-text-tertiary);margin-bottom:3px">نمو الراتب</div><div id="growth" style="font-size:18px;font-weight:500;color:#00C9A0">+140%</div></div>
+      <div><div style="font-size:10px;color:var(--color-text-tertiary);margin-bottom:3px">المنصب</div><div id="finalTitle" style="font-size:12px;font-weight:500">رئيس هندسة</div></div>
+      <div><div style="font-size:10px;color:var(--color-text-tertiary);margin-bottom:3px">ساعات/أسبوع</div><div id="hoursPerWeek" style="font-size:18px;font-weight:500;color:#22D3EE">10h</div></div>
+    </div>
+  </div>
+</div>
+<div class="card" style="margin-bottom:14px">
+  <div class="section-label">منحنى الراتب المتوقع — ريال سعودي/شهر</div>
+  <div class="chart-wrap" style="height:220px"><canvas id="twinChart" role="img" aria-label="Area chart showing salary projection for 3 learning paths over 5 years">مخطط توقعات الراتب</canvas></div>
+</div>
+<div class="card">
+  <div class="section-label">محطات المسار المتوازن</div>
+  <div id="milestones" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;text-align:center"></div>
+</div>`;}
+
+let selectedPath='balanced';
+let currentSalary=8000;
+
+const PATH_DATA={
+  conservative:{desc:'5h/أسبوع · نمو مستدام',hours:5,color:'#3B82F6',mult:[1,1.10,1.22,1.38,1.55,1.75],titles:['مطور','مطور','مطور أول','مهندس','مهندس AI','مهندس أول']},
+  balanced:{desc:'10h/أسبوع · الخيار الأمثل',hours:10,color:'#00C9A0',mult:[1,1.20,1.45,1.72,2.05,2.40],titles:['مطور','مطور متقدم','مهندس AI','قائد تقني','مدير هندسة','رئيس هندسة']},
+  aggressive:{desc:'20h/أسبوع · نمو سريع',hours:20,color:'#F59E0B',mult:[1,1.40,1.85,2.30,2.90,3.60],titles:['مطور','مهندس AI','قائد AI','مدير تقني','VP هندسة','CTO']},
+};
+
+function selectPath(p){
+  selectedPath=p;
+  Object.keys(PATH_DATA).forEach(k=>{
+    const btn=document.getElementById('pbtn-'+k);
+    if(!btn)return;
+    const c=PATH_DATA[k].color;
+    btn.style.border=k===p?`0.5px solid ${c}`:'0.5px solid var(--color-border-tertiary)';
+    btn.style.background=k===p?c+'15':'transparent';
+    btn.style.color=k===p?c:'var(--color-text-secondary)';
+  });
+  const el=document.getElementById('pathDesc');
+  if(el)el.textContent=PATH_DATA[p].desc;
+  updateTwinKPIs();
+  initTwinChart();
+}
+
+function updateTwinKPIs(){
+  const pd=PATH_DATA[selectedPath];
+  const finalSal=Math.round(currentSalary*pd.mult[5]);
+  const growth=Math.round((pd.mult[5]-1)*100);
+  document.getElementById('finalSal').textContent=(finalSal/1000).toFixed(1)+'k ر';
+  document.getElementById('growth').textContent='+'+growth+'%';
+  document.getElementById('finalTitle').textContent=pd.titles[5];
+  document.getElementById('hoursPerWeek').textContent=pd.hours+'h';
+  const ms=document.getElementById('milestones');
+  if(ms){
+    const y=new Date().getFullYear();
+    ms.innerHTML=pd.mult.map((m,i)=>`<div><div style="width:36px;height:36px;border-radius:50%;border:1.5px solid ${i===0?'var(--color-border-tertiary)':pd.color};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:${i===0?'var(--color-text-tertiary)':pd.color};margin:0 auto 6px">${i===0?'📍':'Y'+i}</div><div style="font-size:11px;font-weight:500">${Math.round(currentSalary*m/1000)}k</div><div style="font-size:10px;color:var(--color-text-secondary);margin-top:2px">${pd.titles[i]}</div></div>`).join('');
+  }
+}
+
+function initTwinChart(){
+  destroyChart('twinChart');
+  const canvas=document.getElementById('twinChart');
+  if(!canvas)return;
+  const y=new Date().getFullYear();
+  const labels=[y,y+1,y+2,y+3,y+4,y+5].map(String);
+  const datasets=Object.entries(PATH_DATA).map(([k,pd])=>({
+    label:k==='conservative'?'متحفظ':k==='balanced'?'متوازن':'مكثف',
+    data:pd.mult.map(m=>Math.round(currentSalary*m)),
+    borderColor:pd.color,borderWidth:k===selectedPath?2.5:1,
+    backgroundColor:pd.color+(k===selectedPath?'20':'08'),
+    fill:true,tension:.4,
+    pointRadius:k===selectedPath?4:0,pointBackgroundColor:pd.color,
+  }));
+  charts.twinChart=new Chart(canvas,{
+    type:'line',data:{labels,datasets},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:'rgba(128,128,128,.1)'},ticks:{font:{size:11},color:'#888'}},
+        y:{grid:{color:'rgba(128,128,128,.1)'},ticks:{font:{size:11},color:'#888',callback:v=>`${Math.round(v/1000)}k`}}}}
+  });
+}
+
+// ── ATS OPTIMIZER ─────────────────────────────────────────────
+function atsHTML(){return`
+<div class="page-header">
+  <div class="page-tag">ATS Optimizer</div>
+  <div class="page-title">محسّن السيرة الذاتية <span style="color:#3B82F6">الفوري</span></div>
+  <div class="page-sub">الصق نص سيرتك وشاهد التحليل في الوقت الفعلي</div>
+</div>
+<div class="grid-2">
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div class="section-label" style="margin-bottom:0">السيرة الذاتية</div>
+      <span id="ats-status" style="font-size:11px;color:var(--color-text-tertiary)">في انتظار النص</span>
+    </div>
+    <input class="input-field" placeholder="الوظيفة المستهدفة (اختياري)" id="ats-target" style="margin-bottom:8px">
+    <textarea id="ats-input" placeholder="الصق نص سيرتك الذاتية هنا...&#10;&#10;الاسم: فيصل العسيري&#10;البريد: faisal@email.com&#10;&#10;المهارات:&#10;Python, React, SQL, Git...&#10;&#10;الخبرة:&#10;مطور | شركة تقنية | 2022-2024" style="width:100%;height:280px;padding:10px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary);font-size:12px;font-family:var(--font-mono);resize:none;outline:none;direction:rtl;line-height:1.7" oninput="atsAnalyze(this.value)"></textarea>
+    <div style="margin-top:6px;display:flex;justify-content:space-between">
+      <span id="ats-charcount" style="font-size:11px;color:var(--color-text-tertiary)">0 حرف</span>
+      <span style="font-size:11px;color:var(--color-text-tertiary)">التحليل يبدأ بعد 80 حرف</span>
+    </div>
+  </div>
+  <div id="ats-results">
+    <div style="padding:40px;text-align:center;color:var(--color-text-tertiary)">
+      <div style="font-size:36px;margin-bottom:12px">📄</div>
+      <div style="font-size:13px">الصق سيرتك للبدء</div>
+    </div>
+  </div>
+</div>`;}
+
+let atsTimer=null;
+function atsAnalyze(text){
+  const cc=document.getElementById('ats-charcount');
+  if(cc)cc.textContent=text.length+' حرف';
+  const st=document.getElementById('ats-status');
+  if(st)st.textContent=text.length>80?'يحلل...':'في انتظار النص';
+  if(atsTimer)clearTimeout(atsTimer);
+  if(text.length<80){document.getElementById('ats-results').innerHTML=`<div style="padding:40px;text-align:center;color:var(--color-text-tertiary)"><div style="font-size:36px;margin-bottom:12px">📄</div><div style="font-size:13px">الصق سيرتك للبدء</div></div>`;return;}
+  atsTimer=setTimeout(()=>showATSResults(text),1200);
+}
+
+function showATSResults(text){
+  const has=re=>re.test(text);
+  const scores={contact:(has(/@/)?50:0)+(has(/\d{9,}/)?50:0),summary:text.split(/\s+/).length>40?85:20,skills:has(/مهارات|skills/i)?82:10,experience:has(/خبرة|experience|عمل/i)?78:5,education:has(/تعليم|university|بكالوريوس|bachelor/i)?90:30,format:70};
+  const avg=Math.round(Object.values(scores).reduce((s,v)=>s+v,0)/6);
+  const grade=avg>=85?'A':avg>=70?'B':avg>=55?'C':avg>=40?'D':'F';
+  const gc={A:'#00C9A0',B:'#3B82F6',C:'#F59E0B',D:'#F97316',F:'#EF4444'}[grade];
+  const gl={A:'ممتاز',B:'جيد جداً',C:'متوسط',D:'ضعيف',F:'يحتاج تطوير'}[grade];
+  const found=['Python','React'].filter(()=>has(/python|react/i));
+  const missing=['Docker','K8s','ML','FastAPI','Cloud'];
+  const secs=[['contact','الاتصال',scores.contact],['summary','الملخص',scores.summary],['skills','المهارات',scores.skills],['experience','الخبرة',scores.experience],['education','التعليم',scores.education],['format','التنسيق',scores.format]];
+  const st=document.getElementById('ats-status');
+  if(st)st.textContent='مكتمل ✓';
+  document.getElementById('ats-results').innerHTML=`
+<div class="card" style="margin-bottom:10px;border:0.5px solid ${gc}60">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div><div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:4px">درجة ATS الإجمالية</div>
+      <div style="font-size:42px;font-weight:500;color:${gc};line-height:1">${avg}</div>
+      <div style="font-size:14px;font-weight:500;color:${gc};margin-top:4px">درجة ${grade} · ${gl}</div>
+    </div>
+    <svg width="60" height="60" style="transform:rotate(-90deg)"><circle cx="30" cy="30" r="24" fill="none" stroke="var(--color-border-tertiary)" stroke-width="4"/><circle cx="30" cy="30" r="24" fill="none" stroke="${gc}" stroke-width="4" stroke-dasharray="${avg/100*150.8} 150.8" stroke-linecap="round"/></svg>
+  </div>
+  <div style="margin-top:10px;height:5px;background:var(--color-background-secondary);border-radius:3px;overflow:hidden"><div style="height:100%;width:${avg}%;background:${gc};border-radius:3px;transition:width .8s"></div></div>
+</div>
+<div class="card" style="margin-bottom:10px">
+  <div class="section-label">درجة كل قسم</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    ${secs.map(([,l,v])=>{const c=v>=75?'#00C9A0':v>=50?'#F59E0B':'#EF4444';return`<div style="text-align:center;padding:10px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)"><div style="font-size:16px;font-weight:500;color:${c}">${v}</div><div style="font-size:10px;color:var(--color-text-secondary);margin-top:2px">${l}</div><div style="height:3px;background:var(--color-border-tertiary);border-radius:2px;margin-top:6px;overflow:hidden"><div style="height:100%;width:${v}%;background:${c};border-radius:2px"></div></div></div>`;}).join('')}
+  </div>
+</div>
+<div class="card" style="margin-bottom:10px">
+  <div class="section-label">الكلمات المفتاحية</div>
+  <div style="margin-bottom:8px"><div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:5px">موجودة ✅</div><div style="display:flex;gap:5px;flex-wrap:wrap">${found.length?found.map(k=>`<span class="badge badge-green">${k}</span>`).join(''):'<span style="font-size:11px;color:var(--color-text-tertiary)">لم تُكتشف بعد</span>'}</div></div>
+  <div><div style="font-size:11px;color:var(--color-text-tertiary);margin-bottom:5px">مفقودة ❌</div><div style="display:flex;gap:5px;flex-wrap:wrap">${missing.map(k=>`<span class="badge badge-red">${k}</span>`).join('')}</div></div>
+</div>
+<div class="card" style="border:0.5px solid var(--color-border-info)">
+  <div class="section-label">اقتراحات الذكاء الاصطناعي</div>
+  ${['أضف مقياسًا لكل إنجاز (نسبة، حجم، تأثير قابل للقياس)','استبدل الوصف بأفعال إنجاز: طوّرت، أطلقت، قلّصت','ضع الكلمات المفتاحية في أول ٣ أسطر من السيرة','احذف: الجنسية، العمر، الصورة الشخصية'].map((s,i)=>`<div style="display:flex;gap:10px;padding:7px 10px;border-radius:var(--border-radius-md);background:var(--color-background-info);margin-bottom:6px;font-size:12px"><span style="color:var(--color-text-info);font-weight:500">${i+1}.</span><span style="color:var(--color-text-info)">${s}</span></div>`).join('')}
+</div>`;}
+
+// ── B2B PORTAL ─────────────────────────────────────────────────
+function b2bHTML(){return`
+<div class="page-header">
+  <div class="page-tag">B2B Enterprise Portal</div>
+  <div class="page-title">بوابة الذكاء المؤسسي</div>
+  <div class="page-sub">Arkane Tech · 342 موظف · الرياض</div>
+</div>
+<div id="b2b-tabs" class="tab-row">
+  <button class="tab active" onclick="switchB2BTab('dash')">📊 لوحة التحكم</button>
+  <button class="tab" onclick="switchB2BTab('succession')">🔄 التعاقب</button>
+  <button class="tab" onclick="switchB2BTab('challenges')">⚡ التحديات</button>
+  <button class="tab" onclick="switchB2BTab('nitaqat')">🇸🇦 نطاقات</button>
+</div>
+<div id="b2b-content"></div>`;}
+
+function switchB2BTab(tab){
+  document.querySelectorAll('#b2b-tabs .tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  const el=document.getElementById('b2b-content');
+  if(tab==='dash') el.innerHTML=b2bDash();
+  if(tab==='succession') el.innerHTML=b2bSuccession();
+  if(tab==='challenges') el.innerHTML=b2bChallenges();
+  if(tab==='nitaqat') el.innerHTML=b2bNitaqat();
+  if(tab==='dash') setTimeout(initB2BCharts,100);
+}
+
+function b2bDash(){return`
+<div class="grid-4"><div class="metric"><div class="metric-val">342</div><div class="metric-lbl">الموظفون</div></div><div class="metric"><div class="metric-val" style="color:#10B981">55.3%</div><div class="metric-lbl">نسبة السعودة</div></div><div class="metric"><div class="metric-val" style="color:#22D3EE">68/100</div><div class="metric-lbl">متوسط الجاهزية</div></div><div class="metric"><div class="metric-val" style="color:#10B981">أخضر مرتفع</div><div class="metric-lbl">نطاق نطاقات</div></div></div>
+<div class="grid-2"><div class="card"><div class="section-label">السعودة حسب القسم</div><div class="chart-wrap" style="height:200px"><canvas id="deptChart" role="img" aria-label="Horizontal bar chart showing Saudization rates by department">معدلات السعودة</canvas></div></div>
+<div style="display:flex;flex-direction:column;gap:10px"><div class="card" style="flex:1"><div class="section-label">اتجاه السعودة — 6 أشهر</div><div class="chart-wrap" style="height:130px"><canvas id="nitaqatTrendChart" role="img" aria-label="Line chart showing Saudization trend over 6 months">اتجاه السعودة</canvas></div></div>
+<div class="card"><div class="section-label">آخر التنبيهات</div>${[['⚠️','قسم البيانات: سعودة 41% — منخفض','warning'],['🔄','خالد العمر جاهز لـ Tech Lead','info'],['💡','على بُعد 4.7% من البلاتيني','info']].map(([i,m,t])=>`<div style="display:flex;gap:8px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><span>${i}</span><span style="font-size:12px">${m}</span></div>`).join('')}</div></div></div>`;}
+
+function b2bSuccession(){return`
+<div class="grid-2">
+${[{n:'خالد العمر',dept:'Engineering',cur:'Senior Developer',target:'Tech Lead',rl:'ready_now',score:89,col:'#10B981',reason:'قيادة استثنائية في microservices، أعلى تقييم أداء للعام الثالث.',up:['System Design · 8w','Kubernetes · 4w','Leadership · 6w']},
+{n:'سارة الغامدي',dept:'Data & AI',cur:'Data Analyst',target:'Senior Data Scientist',rl:'ready_1yr',score:76,col:'#3B82F6',reason:'قدّمت 3 مشاريع بيانات أثّرت مباشرة في الإيرادات.',up:['ML Engineering · 12w','MLOps · 6w']},
+{n:'فارس الدوسري',dept:'Operations',cur:'Ops Specialist',target:'Ops Supervisor',rl:'ready_2yr',score:61,col:'#F59E0B',reason:'أطول خبرة تشغيلية في الفريق، يحتاج تطوير قيادي.',up:['Leadership · 10w','Data Analysis · 8w']},
+{n:'نورة الشهري',dept:'Marketing',cur:'Digital Marketing Specialist',target:'Marketing Manager',rl:'ready_1yr',score:72,col:'#3B82F6',reason:'نمو 40% في الحملات الرقمية، ريادة فطرية مع الفريق.',up:['Strategy · 8w','Budget Mgmt · 4w']},
+].map(c=>`<div class="card"><div style="display:flex;gap:12px;margin-bottom:12px;align-items:flex-start"><div style="width:42px;height:42px;border-radius:12px;background:${c.col}15;border:0.5px solid ${c.col}40;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:${c.col};flex-shrink:0">${c.n[0]}</div><div style="flex:1"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div style="font-size:13px;font-weight:500">${c.n}</div><div style="font-size:11px;color:var(--color-text-secondary)">${c.cur} · ${c.dept}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="badge" style="background:${c.col}15;color:${c.col}">${c.rl==='ready_now'?'جاهز الآن':c.rl==='ready_1yr'?'سنة':'سنتان'}</span><span style="font-size:10px;color:var(--color-text-tertiary)">ثقة: ${c.score}%</span></div></div></div></div>
+<div style="padding:8px 12px;border-radius:var(--border-radius-md);background:var(--color-background-secondary);display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span style="font-size:11px;color:var(--color-text-secondary)">→ ${c.target}</span><span style="font-size:16px;font-weight:500;color:${c.col}">${c.score}</span></div>
+<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;line-height:1.5">${c.reason}</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px">${c.up.map(u=>`<span class="badge badge-gray">${u}</span>`).join('')}</div>
+<div style="display:flex;gap:8px;margin-top:10px"><button class="btn-primary" style="flex:1;font-size:11px">خطة التطوير</button><button class="btn-primary" style="flex:1;font-size:11px">الملف الكامل</button></div></div>`).join('')}
+</div>`;}
+
+function b2bChallenges(){return`
+<div class="card" style="margin-bottom:12px">
+<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 0.8fr;gap:10px;padding:0 0 8px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:6px">
+${['التحدي','النوع','الصعوبة','المشاركون','الحالة'].map(h=>`<div style="font-size:10px;color:var(--color-text-tertiary);font-weight:500;letter-spacing:0.5px">${h}</div>`).join('')}
+</div>
+${[['تحدي Python للباك إند','coding','hard',14,18,'active'],['تصميم الأنظمة','case_study','expert',6,6,'completed'],['SQL وتحليل البيانات','coding','medium',19,22,'active'],['اختبار المنطق','logic','medium',8,12,'active'],['مهارات التواصل','language','easy',0,0,'draft']].map(([t,type,diff,sub,inv,status])=>`
+<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 0.8fr;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);align-items:center">
+<div><div style="font-size:12px;font-weight:500">${t}</div><div style="font-size:10px;color:var(--color-text-secondary)">${type}</div></div>
+<span class="badge" style="background:${{hard:'#EF4444',expert:'#8247E5',medium:'#F59E0B',easy:'#10B981'}[diff]}15;color:${{hard:'#EF4444',expert:'#8247E5',medium:'#F59E0B',easy:'#10B981'}[diff]}">${{hard:'صعب',expert:'خبير',medium:'متوسط',easy:'سهل'}[diff]}</span>
+<div><span style="font-size:13px;font-weight:500">${sub}</span><span style="font-size:10px;color:var(--color-text-tertiary)">/${inv}</span></div>
+<div><span style="font-size:13px;font-weight:500">${sub}</span></div>
+<span class="badge badge-${status==='active'?'green':status==='completed'?'blue':'gray'}">${{active:'نشط',completed:'مكتمل',draft:'مسودة'}[status]}</span>
+</div>`).join('')}
+</div>
+<div class="card">
+<div class="section-label">نتائج تحدي Python</div>
+${[['أحمد المطيري',88,92,true,'أداء ممتاز في الخوارزميات · كود نظيف'],['محمد الزهراني',74,71,true,'حل صحيح بتعقيد أعلى من المثالي'],['نواف السيد',61,45,false,'أخطاء في الحالات الاستثنائية'],['ريم العتيبي',95,98,true,'أفضل حل في الدفعة · DP مثالي'],].map(([n,sc,pct,pass,notes])=>{const c=pass?'#10B981':'#EF4444';return`<div class="row-item"><svg width="40" height="40" style="transform:rotate(-90deg);flex-shrink:0"><circle cx="20" cy="20" r="16" fill="none" stroke="var(--color-border-tertiary)" stroke-width="3"/><circle cx="20" cy="20" r="16" fill="none" stroke="${c}" stroke-width="3" stroke-dasharray="${sc/100*100.5} 100.5" stroke-linecap="round"/></svg><div style="position:absolute;width:40px;text-align:center;font-size:10px;font-weight:500;color:${c}">${sc}</div><div style="flex:1;margin-right:4px"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:500">${n}</span><div style="display:flex;gap:6px"><span style="font-size:10px;color:var(--color-text-tertiary)">P${pct}</span><span class="badge badge-${pass?'green':'red'}">${pass?'نجح':'رسب'}</span></div></div><div style="font-size:11px;color:var(--color-text-secondary);margin-top:2px">${notes}</div></div></div>`;}).join('')}
+</div>`;}
+
+let nitaqatScenarios=[{sH:5,nsH:0,l:'توظيف 5 سعوديين'},{sH:3,nsH:5,l:'مختلط'},{sH:10,nsH:0,l:'استقطاب نخبة'}];
+function b2bNitaqat(){
+  return`<div class="grid-4" style="margin-bottom:12px">
+<div class="metric"><div class="metric-val" style="color:#10B981">أخضر مرتفع</div><div class="metric-lbl">النطاق الحالي</div></div>
+<div class="metric"><div class="metric-val" style="color:#10B981">55.3%</div><div class="metric-lbl">نسبة السعودة</div></div>
+<div class="metric"><div class="metric-val">+20</div><div class="metric-lbl">للبلاتيني (موظف سعودي)</div></div>
+<div class="metric"><div class="metric-val" style="color:#F59E0B">31 ديس</div><div class="metric-lbl">تجديد نطاقات</div></div>
+</div>
+<div class="grid-2">
+<div class="card" id="nit-scenarios">
+<div class="section-label">سيناريوهات التوظيف</div>
+${nitaqatScenarios.map((s,i)=>{
+  const nt=342+s.sH+s.nsH,ns=189+s.sH,nr=Math.round(ns/nt*1000)/10;
+  const nb=nr>=75?'platinum':nr>=60?'high_green':nr>=50?'low_green':nr>=35?'yellow':'red';
+  const bc={platinum:'#E5E7EB',high_green:'#10B981',low_green:'#34D399',yellow:'#F59E0B',red:'#EF4444'}[nb];
+  const bl={platinum:'البلاتيني',high_green:'أخضر مرتفع',low_green:'أخضر منخفض',yellow:'أصفر',red:'أحمر'}[nb];
+  const change=({platinum:4,high_green:3,low_green:2,yellow:1,red:0}[nb]>3)?'ترقية ⬆️':'maintain';
+  return`<div style="padding:12px;border-radius:var(--border-radius-md);background:var(--color-background-secondary);margin-bottom:10px;border:0.5px solid var(--color-border-tertiary)">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<span style="font-size:12px;font-weight:500">${s.l}</span>
+<div style="display:flex;gap:6px;align-items:center"><span style="font-size:13px;font-weight:500;color:${bc}">${nr}%</span><span class="badge" style="background:${bc}15;color:${bc}">${bl}</span></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary);margin-bottom:3px"><span>سعودي 🇸🇦</span><span style="color:#10B981;font-weight:500">${s.sH}</span></div>
+<input type="range" min="0" max="20" value="${s.sH}" style="width:100%" onchange="updateNitaqat(${i},'sH',+this.value)"></div>
+<div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary);margin-bottom:3px"><span>غير سعودي</span><span style="color:var(--color-text-tertiary);font-weight:500">${s.nsH}</span></div>
+<input type="range" min="0" max="20" value="${s.nsH}" style="width:100%" onchange="updateNitaqat(${i},'nsH',+this.value)"></div>
+</div>
+<div style="margin-top:8px;height:4px;background:var(--color-border-tertiary);border-radius:2px;overflow:hidden"><div style="height:100%;width:${nr}%;background:${bc};border-radius:2px;transition:width .5s;max-width:100%"></div></div>
+</div>`;}).join('')}
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div class="card">
+<div class="section-label">عتبات نطاقات — قطاع التقنية</div>
+${[['البلاتيني',75,'#E5E7EB'],['أخضر مرتفع',60,'#10B981'],['أخضر منخفض',50,'#34D399'],['أصفر',35,'#F59E0B']].map(([l,r,c])=>`<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><div style="width:8px;height:8px;border-radius:50%;background:${c}"></div><div style="flex:1;display:flex;justify-content:space-between"><span style="font-size:12px">${l}</span><span style="font-size:11px;font-family:var(--font-mono);color:${c}">≥ ${r}%</span></div>${55.3>=r?'<span style="font-size:10px;color:#10B981">✓</span>':`<span style="font-size:10px;color:var(--color-text-tertiary)">+${(r-55.3).toFixed(1)}%</span>`}</div>`).join('')}
+</div>
+<div class="card">
+<div class="section-label">توصيات</div>
+<div style="font-size:12px;color:var(--color-text-secondary);line-height:1.8">
+✅ السيناريو "توظيف 5 سعوديين" سيرفع نطاقك<br>
+⚠️ السيناريو "مختلط" سيحافظ على نطاقك الحالي<br>
+💡 أنت على بُعد 4.7% من نطاق البلاتيني<br>
+📅 تجديد نطاقات: 31 ديسمبر 2025
+</div>
+</div>
+</div>
+</div>`;}
+
+function updateNitaqat(i,key,val){nitaqatScenarios[i][key]=val;document.getElementById('b2b-content').innerHTML=b2bNitaqat();}
+
+// ── TRUST LAYER ────────────────────────────────────────────────
+function trustHTML(){return`
+<div class="page-header">
+  <div class="page-tag">Trust Layer</div>
+  <div class="page-title">طبقة الثقة والمدفوعات</div>
+  <div class="page-sub">NFT Soulbound · Stripe · Nafath · عمولات 30%</div>
+</div>
+<div id="trust-tabs" class="tab-row">
+  <button class="tab active" onclick="switchTrustTab('creds')">◆ شهادات NFT</button>
+  <button class="tab" onclick="switchTrustTab('payments')">💳 المدفوعات</button>
+  <button class="tab" onclick="switchTrustTab('affiliate')">🤝 العمولات</button>
+</div>
+<div id="trust-content"></div>`;}
+
+function switchTrustTab(tab){
+  document.querySelectorAll('#trust-tabs .tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  const el=document.getElementById('trust-content');
+  if(tab==='creds') el.innerHTML=trustCreds();
+  if(tab==='payments') el.innerHTML=trustPayments();
+  if(tab==='affiliate') el.innerHTML=trustAffiliate();
+}
+
+function trustCreds(){return`
+<div class="grid-4" style="margin-bottom:12px">
+<div class="metric"><div class="metric-val" style="color:#8247E5">Polygon</div><div class="metric-lbl">Blockchain Network</div></div>
+<div class="metric"><div class="metric-val" style="color:#22D3EE">1,247</div><div class="metric-lbl">إجمالي الشهادات</div></div>
+<div class="metric"><div class="metric-val" style="color:#10B981">1,234</div><div class="metric-lbl">صالحة الآن</div></div>
+<div class="metric"><div class="metric-val" style="color:#3B82F6">99.8%</div><div class="metric-lbl">معدل التحقق</div></div>
+</div>
+<div class="grid-2">
+<div>
+${[{tid:1,skill:'Python & Machine Learning',type:'🗺️ مسار مكتمل',date:'2025-04-01',valid:true,rec:'خالد العمر',tx:'0xabc123...',c:'#8247E5'},
+{tid:2,skill:'Docker & Kubernetes',type:'✅ مهارة موثقة',date:'2025-03-20',valid:true,rec:'سارة الغامدي',tx:'0xdef456...',c:'#10B981'},
+{tid:3,skill:'AWS Cloud Practitioner',type:'🏅 شهادة مهنية',date:'2025-03-10',valid:false,rec:'فارس الدوسري',tx:'0xghi789...',c:'#EF4444',revoked:'طلب المستخدم'},
+{tid:4,skill:'FastAPI Backend Dev',type:'📚 إتمام كورس',date:'2025-04-10',valid:true,rec:'نورة الشهري',tx:'0xjkl012...',c:'#22D3EE'},
+].map(c=>`<div class="cred-card" id="cred-${c.tid}" onclick="toggleCred(${c.tid})">
+<div style="display:flex;gap:12px;align-items:flex-start">
+<div style="width:48px;height:48px;border-radius:12px;background:${c.c}15;border:0.5px solid ${c.c}40;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;position:relative">
+${c.type.split(' ')[0]}<div style="position:absolute;top:2px;right:2px;width:8px;height:8px;border-radius:50%;background:${c.valid?'#10B981':'#EF4444'}"></div>
+</div>
+<div style="flex:1">
+<div style="display:flex;justify-content:space-between;align-items:flex-start">
+<div><div style="font-size:13px;font-weight:500">${c.skill}</div><div style="font-size:11px;color:var(--color-text-secondary);margin-top:2px">${c.rec} · ${c.date}</div></div>
+<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+<span class="badge" style="background:${c.c}15;color:${c.c}">${c.type}</span>
+<span class="badge badge-${c.valid?'green':'red'}">${c.valid?'✓ صالح':'✕ ملغى'}</span>
+</div>
+</div>
+<div style="display:flex;gap:12px;margin-top:6px">
+<span style="font-size:10px;color:var(--color-text-tertiary)">Token #${c.tid}</span>
+<span style="font-size:10px;color:#8247E5">◆ Polygon</span>
+<span style="font-size:10px;color:var(--color-text-tertiary);font-family:var(--font-mono)">${c.tx}</span>
+</div>
+</div>
+</div>
+${c.revoked?`<div id="cred-detail-${c.tid}" style="display:none;margin-top:10px;padding:10px;border-radius:var(--border-radius-md);background:var(--color-background-danger)"><span style="font-size:12px;color:var(--color-text-danger)">⚠️ سبب الإلغاء: ${c.revoked}</span></div>`:`<div id="cred-detail-${c.tid}" style="display:none;margin-top:10px"><div style="display:flex;gap:8px"><button class="btn-primary" style="flex:1;font-size:11px">🔗 Polygonscan</button><button class="btn-primary" style="flex:1;font-size:11px">📥 PDF</button><button class="btn-primary" style="flex:1;font-size:11px">📲 QR Code</button></div></div>`}
+</div>`).join('')}
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div class="card">
+<div class="section-label">سك شهادة NFT جديدة</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<input class="input-field" placeholder="المهارة المُعتمدة: Machine Learning" id="mint-skill">
+<select class="input-field" id="mint-type"><option>🗺️ مسار مكتمل</option><option>✅ مهارة موثقة</option><option>🏅 شهادة مهنية</option><option>📚 إتمام كورس</option></select>
+<input class="input-field" placeholder="عنوان المحفظة: 0x..." id="mint-wallet" style="font-family:var(--font-mono)">
+<button class="btn-accent" id="mint-btn" onclick="doMint()" style="width:100%">◆ سك NFT على Polygon</button>
+<div style="font-size:10px;color:var(--color-text-tertiary);text-align:center">تكلفة Gas: ~0.003 MATIC</div>
+</div>
+</div>
+<div class="card">
+<div class="section-label">التحقق من شهادة</div>
+<input class="input-field" placeholder="content hash أو Token ID" id="verify-input" style="margin-bottom:8px;font-family:var(--font-mono)">
+<button class="btn-primary" onclick="doVerify()" style="width:100%">🔍 تحقق على Polygon</button>
+<div id="verify-result" style="margin-top:10px"></div>
+</div>
+</div>
+</div>`;}
+
+function toggleCred(id){const d=document.getElementById('cred-detail-'+id);if(d)d.style.display=d.style.display==='none'?'block':'none';}
+async function doMint(){
+  const btn=document.getElementById('mint-btn');
+  if(!btn)return;
+  btn.textContent='يتم السك على Polygon...';
+  btn.disabled=true;
+  await new Promise(r=>setTimeout(r,2500));
+  btn.textContent='✅ تم سك الشهادة بنجاح!';
+  btn.style.background='#10B981';
+  setTimeout(()=>{btn.textContent='◆ سك NFT على Polygon';btn.style.background='#00C9A0';btn.disabled=false;},3000);
+}
+async function doVerify(){
+  const inp=document.getElementById('verify-input');
+  const res=document.getElementById('verify-result');
+  if(!inp||!res)return;
+  res.innerHTML='<div style="font-size:12px;color:var(--color-text-secondary)">جارٍ التحقق...</div>';
+  await new Promise(r=>setTimeout(r,1200));
+  if(inp.value.length>2){
+    res.innerHTML='<div style="padding:10px;border-radius:var(--border-radius-md);background:var(--color-background-success);font-size:12px;color:var(--color-text-success)">✅ شهادة صالحة · Python & ML · خالد العمر</div>';
+  } else {
+    res.innerHTML='<div style="padding:10px;border-radius:var(--border-radius-md);background:var(--color-background-danger);font-size:12px;color:var(--color-text-danger)">❌ Hash not found on Polygon blockchain</div>';
+  }
+}
+
+function trustPayments(){return`
+<div class="grid-4" style="margin-bottom:12px">
+<div class="metric"><div class="metric-val" style="color:#10B981">42.3K ر</div><div class="metric-lbl">إيرادات الشهر</div></div>
+<div class="metric"><div class="metric-val" style="color:#3B82F6">1,247</div><div class="metric-lbl">اشتراكات نشطة</div></div>
+<div class="metric"><div class="metric-val" style="color:#22D3EE">8.3%</div><div class="metric-lbl">معدل التحويل</div></div>
+<div class="metric"><div class="metric-val" style="color:#F59E0B">2,340 ر</div><div class="metric-lbl">متوسط LTV</div></div>
+</div>
+<div class="grid-2">
+<div class="card">
+<div class="section-label">خطط الاشتراك B2C</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+${[['Free','free',0,'#888'],['Pro','pro',99,'#3B82F6'],['Premium','premium',299,'#F59E0B']].map(([n,k,p,c])=>`<div style="padding:14px;border-radius:var(--border-radius-md);border:0.5px solid ${k==='pro'?c:'var(--color-border-tertiary)'};background:${k==='pro'?c+'10':'var(--color-background-secondary)'}">
+<div style="font-size:14px;font-weight:500;color:${c};margin-bottom:4px">${n}</div>
+<div style="font-size:22px;font-weight:500">${p}</div>
+<div style="font-size:10px;color:var(--color-text-tertiary)">ر/شهر${p>0?' + VAT':''}</div>
+${k==='pro'?`<button onclick="showCheckout()" class="btn-accent" style="margin-top:10px;width:100%;font-size:11px">اشترك →</button>`:''}
+</div>`).join('')}
+</div>
+<div id="checkout-area"></div>
+<div class="section-label" style="margin-top:10px">آخر المعاملات</div>
+${[['WIJ-A1B2','خالد','Pro',113.85,'paid'],['WIJ-D4E5','سارة','Premium',343.85,'paid'],['WIJ-G7H8','Tamara','B2B',13800,'pending'],['WIJ-J1K2','نواف','Pro',113.85,'failed']].map(([id,u,p,a,s])=>`<div class="row-item"><div style="width:6px;height:6px;border-radius:50%;background:${s==='paid'?'#10B981':s==='pending'?'#F59E0B':'#EF4444'};flex-shrink:0"></div><div style="flex:1"><div style="font-size:12px;font-weight:500">${u}</div><div style="font-size:10px;color:var(--color-text-tertiary);font-family:var(--font-mono)">${id}</div></div><div style="text-align:left"><div style="font-size:13px;font-weight:500">${a.toLocaleString()} ر</div><div style="font-size:10px;color:${s==='paid'?'#10B981':s==='pending'?'#F59E0B':'#EF4444'};font-weight:500">${{paid:'مدفوع',pending:'معلق',failed:'فشل'}[s]}</div></div></div>`).join('')}
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div class="card">
+<div class="section-label">ملخص VAT — ZATCA</div>
+${[['إجمالي الإيرادات','42,380 ر','#10B981'],['VAT 15%','6,357 ر','#F59E0B'],['صافي الإيرادات','36,023 ر','#3B82F6']].map(([l,v,c])=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><span style="font-size:12px;color:var(--color-text-secondary)">${l}</span><span style="font-size:13px;font-weight:500;color:${c}">${v}</span></div>`).join('')}
+<button class="btn-accent" style="width:100%;margin-top:10px;font-size:12px">تصدير تقرير ZATCA →</button>
+</div>
+<div class="card">
+<div class="section-label">خطط B2B المؤسسية</div>
+${[['Starter','5,000','50 موظف'],['Professional','12,000','200 موظف'],['Enterprise','25,000','غير محدود']].map(([n,p,e])=>`<div class="row-item"><div style="flex:1"><div style="font-size:12px;font-weight:500">${n}</div><div style="font-size:11px;color:var(--color-text-secondary)">حتى ${e}</div></div><div style="font-size:13px;font-weight:500;font-family:var(--font-mono)">${p} ر/ش</div></div>`).join('')}
+</div>
+</div>
+</div>`;}
+
+function showCheckout(){
+  const el=document.getElementById('checkout-area');
+  if(!el)return;
+  el.innerHTML=`<div class="card" style="border:0.5px solid var(--color-border-info);margin-bottom:10px">
+<div class="section-label">إتمام الدفع — Pro 99 ر</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<input class="input-field" placeholder="رقم البطاقة: 4242 4242 4242 4242" style="font-family:var(--font-mono)">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<input class="input-field" placeholder="12/28"><input class="input-field" placeholder="•••">
+</div>
+<div style="display:flex;gap:6px">
+${['💳 بطاقة','🟢 STC Pay','💜 MADA'].map(m=>`<button class="btn-primary" style="flex:1;font-size:11px">${m}</button>`).join('')}
+</div>
+<div style="display:flex;justify-content:space-between;padding:8px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md)">
+<span style="font-size:12px;color:var(--color-text-secondary)">Pro شهري + VAT 15%</span>
+<span style="font-size:13px;font-weight:500;color:#3B82F6">113.85 ر</span>
+</div>
+<button class="btn-accent" onclick="completePayment()" style="width:100%">ادفع الآن 113.85 ر</button>
+<div style="font-size:10px;color:var(--color-text-tertiary);text-align:center">🔒 TLS · ZATCA · Stripe PCI-DSS</div>
+</div>
+</div>`;
+}
+async function completePayment(){
+  const el=document.getElementById('checkout-area');
+  if(!el)return;
+  el.innerHTML='<div style="text-align:center;padding:20px"><div style="font-size:36px;margin-bottom:10px">🎉</div><div style="font-size:16px;font-weight:500;color:#10B981">تم الدفع بنجاح!</div><div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px">تم تفعيل اشتراك Pro</div></div>';
+}
+
+function trustAffiliate(){return`
+<div class="grid-3" style="margin-bottom:12px">
+${[['قياسي','30%','—','0-49 مبيعة/شهر','#888'],['ذهبي','30%','+5%','50-149 مبيعة','#F59E0B'],['بلاتيني','30%','+10%','150+ مبيعة','#E5E7EB']].map(([t,b,bon,th,c])=>`<div class="card" style="border:0.5px solid ${c}30"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><span style="font-size:14px;font-weight:500;color:${c}">${t}</span><span style="font-size:18px;font-weight:500;color:${c}">${bon==='—'?b:b+bon}</span></div><div style="font-size:11px;color:var(--color-text-secondary)">${th}</div>${bon!=='—'?`<span class="badge" style="background:${c}15;color:${c};margin-top:8px">${bon} بونص حجم</span>`:''}</div>`).join('')}
+</div>
+<div class="grid-2">
+<div class="card">
+<div class="section-label">شركاء التدريب</div>
+${[['Coursera Arabia',145,108750,32625,'platinum','#E5E7EB'],['Udemy MENA',89,44500,15575,'gold','#F59E0B'],['SABIC Academy',34,25500,7650,'standard','#888']].map(([n,s,r,c,tier,tc])=>`<div class="card" style="background:var(--color-background-secondary);margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:13px;font-weight:500">${n}</span><span class="badge" style="background:${tc}15;color:${tc}">${{platinum:'بلاتيني',gold:'ذهبي',standard:'قياسي'}[tier]}</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center">${[['مبيعات',s],['إيراد',Math.round(r/1000)+'K'],['عمولة',Math.round(c/1000)+'K']].map(([l,v])=>`<div><div style="font-size:13px;font-weight:500;color:${tc}">${v}</div><div style="font-size:10px;color:var(--color-text-tertiary)">${l}</div></div>`).join('')}</div></div>`).join('')}
+</div>
+<div class="card">
+<div class="section-label">تفصيل حسابة عمولة Coursera Arabia</div>
+${[['إجمالي الإيراد','108,750 ر'],['نسبة أساسية','30%'],['بونص الحجم','+10% (بلاتيني)'],['العمولة الإجمالية','43,500 ر'],['VAT 15%','6,525 ر'],['إجمالي المستحق','50,025 ر']].map(([l,v],i)=>`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><span style="font-size:12px;color:var(--color-text-secondary)">${l}</span><span style="font-size:13px;font-weight:500;color:${i>=3?'#10B981':'var(--color-text-primary)'}">${v}</span></div>`).join('')}
+<button class="btn-accent" style="width:100%;margin-top:12px">🏦 تحويل بنكي + فاتورة ZATCA</button>
+</div>
+</div>`;}
+
+// ── FINAL INTEGRATION ─────────────────────────────────────────
+function finalHTML(){return`
+<div class="page-header">
+  <div class="page-tag">Phase 6 · Final Integration</div>
+  <div class="page-title">التكامل النهائي</div>
+  <div class="page-sub">AI Mock Interview · JWT + Nafath · CI/CD Pipeline</div>
+</div>
+<div id="final-tabs" class="tab-row">
+  <button class="tab active" onclick="switchFinalTab('interview')">🎙️ المقابلة AI</button>
+  <button class="tab" onclick="switchFinalTab('auth')">🔐 المصادقة</button>
+  <button class="tab" onclick="switchFinalTab('cicd')">⚙️ CI/CD</button>
+</div>
+<div id="final-content"></div>`;}
+
+function switchFinalTab(tab){
+  document.querySelectorAll('#final-tabs .tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  const el=document.getElementById('final-content');
+  if(tab==='interview') el.innerHTML=finalInterview();
+  if(tab==='auth') el.innerHTML=finalAuth();
+  if(tab==='cicd') el.innerHTML=finalCICD();
+  if(tab==='interview') initInterview();
+}
+
+let iPhase='setup',curQ=0,iTimer=0,iTimerInterval=null,iScores=[];
+const IQS=[
+  {text:'اشرح الفرق بين REST وGraphQL ومتى تختار كلاً منهما؟',cat:'تقني'},
+  {text:'صف تحدياً تقنياً صعباً واجهته وكيف تغلبت عليه.',cat:'سلوكي'},
+  {text:'كيف تُحسّن أداء API يستغرق أكثر من 5 ثوانٍ؟',cat:'تقني'},
+];
+const TRANSCRIPTS=['REST هو بروتوكول HTTP بسيط للـ CRUD. GraphQL يسمح بطلب البيانات المحددة فقط. أختار REST للمشاريع البسيطة، وGraphQL للتطبيقات المعقدة ذات متطلبات البيانات المتنوعة.','واجهت N+1 query problem في نظام تحت ضغط عالٍ. حللتها بـ profiling، وأضفت database indexes. النتيجة: تحسّن 80% في الأداء.','أبدأ بـ profiling لتحديد الـ bottleneck، ثم أحسّن الـ queries، أضيف Redis caching، وأطبق pagination.'];
+let iRecording=false,iProcessing=false;
+
+function fmtTime(s){return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;}
+
+function finalInterview(){return`
+<div id="interview-setup" style="${iPhase!=='setup'?'display:none':''}">
+<div class="grid-2">
+<div class="card">
+<div class="section-label">إعداد المقابلة التدريبية</div>
+<div style="margin-bottom:10px"><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:6px">الوظيفة المستهدفة</div><input class="input-field" value="مهندس برمجيات" id="i-role"></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+${['تقني','سلوكي','مختلط'].map((t,i)=>`<button class="btn-primary" style="${i===2?'background:var(--color-background-success);color:var(--color-text-success);border-color:var(--color-border-success)':''};font-size:11px">${t}</button>`).join('')}
+</div>
+<button class="btn-accent" onclick="startInterview()" style="width:100%;padding:12px">🎙️ ابدأ المقابلة</button>
+</div>
+<div class="card">
+<div class="section-label">كيف تعمل المقابلة؟</div>
+${[['WebRTC getUserMedia','التقاط الصوت'],['WebSocket FastAPI','إرسال PCM chunks'],['Gemini 2.0 Flash','تفريغ نصي + تقييم'],['AI Grading','Score + Feedback'],['Final Report','PDF + خطة تحسين']].map(([t,d],i)=>`<div style="display:flex;gap:10px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><div style="width:22px;height:22px;border-radius:50%;background:var(--color-background-success);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:var(--color-text-success);flex-shrink:0">${i+1}</div><div><div style="font-size:12px;font-weight:500">${t}</div><div style="font-size:11px;color:var(--color-text-secondary)">${d}</div></div></div>`).join('')}
+</div>
+</div>
+</div>
+<div id="interview-active" style="${iPhase!=='active'?'display:none':''}">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<div style="display:flex;gap:8px"><span class="badge badge-green">● WebRTC Connected</span><span class="badge badge-blue" id="i-role-badge">مهندس برمجيات</span></div>
+<div style="display:flex;gap:12px;align-items:center"><span style="font-size:16px;font-weight:500;color:#F59E0B" id="i-timer">00:00</span><span style="font-size:12px;color:var(--color-text-secondary)" id="i-qnum">سؤال 1/3</span></div>
+</div>
+<div style="height:4px;background:var(--color-background-secondary);border-radius:2px;margin-bottom:14px;overflow:hidden"><div id="i-progress" style="height:100%;background:#00C9A0;border-radius:2px;width:0%;transition:width .5s"></div></div>
+<div class="grid-2">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div class="interview-q" id="i-question"><div style="font-size:10px;color:#00C9A0;margin-bottom:6px;font-weight:500" id="i-qcat">سؤال تقني</div><div style="font-size:14px;font-weight:500" id="i-qtext">${IQS[0].text}</div></div>
+<div class="card" style="min-height:90px"><div class="section-label" id="i-transcript-label">إجابتك</div><div style="font-size:13px;color:var(--color-text-secondary);line-height:1.7" id="i-transcript">اضغط "بدء التسجيل" للإجابة على السؤال...</div></div>
+<div id="i-waveform" style="display:none" class="card"><div class="waveform">${Array.from({length:16}).map((_,i)=>`<div class="wave-bar" style="animation-delay:${i*0.05}s"></div>`).join('')}</div><div style="text-align:center;font-size:11px;color:#EF4444;margin-top:6px">● يُسجَّل — تحدث بوضوح</div></div>
+<div style="display:flex;gap:10px" id="i-controls">
+<button id="i-rec-btn" class="btn-accent" onclick="toggleRecording()" style="flex:2;padding:12px">🎙️ بدء التسجيل</button>
+<button class="btn-primary" onclick="skipQuestion()" style="flex:1">تخطي</button>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div class="card" style="text-align:center">
+<div class="section-label">تقييم الإجابة</div>
+<div id="i-score-display" style="padding:20px 0;color:var(--color-text-tertiary);font-size:12px">في انتظار إجابتك</div>
+</div>
+<div id="i-feedback" style="display:none" class="card"><div class="section-label">ملاحظات AI</div><div id="i-feedback-text" style="font-size:12px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:10px"></div><div class="section-label">💡 نصائح</div><div id="i-tips"></div></div>
+</div>
+</div>
+</div>
+<div id="interview-complete" style="${iPhase!=='complete'?'display:none':''}">
+<div style="text-align:center;padding:30px 0 20px"><div style="font-size:48px;margin-bottom:12px">🏆</div><div style="font-size:24px;font-weight:500">انتهت المقابلة التدريبية</div><div id="i-final-score" style="font-size:18px;font-weight:500;color:#00C9A0;margin-top:8px"></div></div>
+<div class="grid-3" style="margin-bottom:14px" id="i-final-stats"></div>
+<div style="display:flex;gap:12px"><button class="btn-primary" onclick="resetInterview()" style="flex:1">مقابلة جديدة</button><button class="btn-accent" style="flex:2">📥 تحميل التقرير PDF</button></div>
+</div>`;}
+
+function initInterview(){
+  iPhase='setup';curQ=0;iTimer=0;iScores=[];iRecording=false;iProcessing=false;
+  if(iTimerInterval){clearInterval(iTimerInterval);iTimerInterval=null;}
+}
+
+function startInterview(){
+  iPhase='active';
+  document.getElementById('interview-setup').style.display='none';
+  document.getElementById('interview-active').style.display='block';
+  iTimerInterval=setInterval(()=>{iTimer++;const t=document.getElementById('i-timer');if(t)t.textContent=fmtTime(iTimer);},1000);
+  updateQuestion();
+}
+
+function updateQuestion(){
+  const q=IQS[curQ];
+  const qt=document.getElementById('i-qtext'),qc=document.getElementById('i-qcat'),qn=document.getElementById('i-qnum'),pr=document.getElementById('i-progress');
+  if(qt)qt.textContent=q.text;
+  if(qc)qc.textContent='سؤال '+q.cat;
+  if(qn)qn.textContent=`سؤال ${curQ+1}/${IQS.length}`;
+  if(pr)pr.style.width=(curQ/IQS.length*100)+'%';
+  const tr=document.getElementById('i-transcript');if(tr)tr.textContent='اضغط "بدء التسجيل" للإجابة...';
+  const fb=document.getElementById('i-feedback');if(fb)fb.style.display='none';
+  const sd=document.getElementById('i-score-display');if(sd)sd.innerHTML='<div style="padding:20px 0;color:var(--color-text-tertiary);font-size:12px">في انتظار إجابتك</div>';
+  const btn=document.getElementById('i-rec-btn');if(btn){btn.textContent='🎙️ بدء التسجيل';btn.style.background='#00C9A0';btn.disabled=false;}
+}
+
+async function toggleRecording(){
+  if(iProcessing)return;
+  if(!iRecording){
+    iRecording=true;
+    const btn=document.getElementById('i-rec-btn');if(btn){btn.textContent='⏹ إنهاء الإجابة';btn.style.background='#EF4444';}
+    const wf=document.getElementById('i-waveform');if(wf)wf.style.display='block';
+    const tr=document.getElementById('i-transcript');if(tr)tr.textContent='جارٍ الاستماع...';
+  } else {
+    iRecording=false;iProcessing=true;
+    const wf=document.getElementById('i-waveform');if(wf)wf.style.display='none';
+    const btn=document.getElementById('i-rec-btn');if(btn){btn.textContent='جارٍ التقييم...';btn.disabled=true;}
+    const tr=document.getElementById('i-transcript');if(tr)tr.textContent='يُفرَّغ عبر Gemini Flash...';
+    await new Promise(r=>setTimeout(r,2000));
+    if(tr)tr.textContent=TRANSCRIPTS[curQ]||TRANSCRIPTS[0];
+    await new Promise(r=>setTimeout(r,1200));
+    const score=70+Math.floor(Math.random()*25);
+    iScores.push(score);
+    const col=score>=85?'#00C9A0':score>=70?'#3B82F6':'#F59E0B';
+    const sd=document.getElementById('i-score-display');
+    if(sd)sd.innerHTML=`<svg width="60" height="60" style="transform:rotate(-90deg);display:block;margin:0 auto 8px"><circle cx="30" cy="30" r="24" fill="none" stroke="var(--color-border-tertiary)" stroke-width="4"/><circle cx="30" cy="30" r="24" fill="none" stroke="${col}" stroke-width="4" stroke-dasharray="${score/100*150.8} 150.8" stroke-linecap="round"/></svg><div style="font-size:28px;font-weight:500;color:${col}">${score}</div><div style="font-size:13px;font-weight:500;color:${col}">${score>=85?'ممتاز':score>=70?'جيد جداً':'جيد'}</div>`;
+    const fb=document.getElementById('i-feedback');if(fb)fb.style.display='block';
+    const ft=document.getElementById('i-feedback-text');if(ft)ft.textContent='إجابة تُظهر فهماً جيداً للمفهوم. أضف مثالاً من تجربتك الشخصية لتقوية الإجابة.';
+    const tips=document.getElementById('i-tips');
+    if(tips)tips.innerHTML=['أضف أرقاماً وتأثيراً قابلاً للقياس','استخدم STAR method','اذكر الـ trade-offs بين الخيارات'].map(t=>`<div style="font-size:11px;color:var(--color-text-secondary);padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary)">← ${t}</div>`).join('');
+    const ctrls=document.getElementById('i-controls');
+    if(ctrls)ctrls.innerHTML=`<button class="btn-primary" onclick="skipQuestion()" style="flex:1">تخطي</button><button class="btn-accent" onclick="nextQuestion()" style="flex:2;padding:12px">${curQ<IQS.length-1?'التالي →':'إنهاء المقابلة'}</button>`;
+    iProcessing=false;
+  }
+}
+
+async function skipQuestion(){nextQuestion(true);}
+async function nextQuestion(skip=false){
+  curQ++;
+  if(curQ>=IQS.length){endInterview();return;}
+  const ctrls=document.getElementById('i-controls');
+  if(ctrls)ctrls.innerHTML=`<button id="i-rec-btn" class="btn-accent" onclick="toggleRecording()" style="flex:2;padding:12px">🎙️ بدء التسجيل</button><button class="btn-primary" onclick="skipQuestion()" style="flex:1">تخطي</button>`;
+  updateQuestion();
+}
+
+function endInterview(){
+  iPhase='complete';
+  if(iTimerInterval){clearInterval(iTimerInterval);iTimerInterval=null;}
+  document.getElementById('interview-active').style.display='none';
+  document.getElementById('interview-complete').style.display='block';
+  const avg=iScores.length?Math.round(iScores.reduce((a,b)=>a+b,0)/iScores.length):0;
+  const grade=avg>=85?'A':avg>=70?'B':'C';
+  const col=avg>=85?'#00C9A0':avg>=70?'#3B82F6':'#F59E0B';
+  document.getElementById('i-final-score').textContent=`${avg}/100 · درجة ${grade}`;
+  document.getElementById('i-final-score').style.color=col;
+  document.getElementById('i-final-stats').innerHTML=[
+    [avg,'الدرجة الإجمالية',col],[IQS.length,'أسئلة أُجيب',C.blue],[fmtTime(iTimer),'مدة المقابلة','#F59E0B']
+  ].map(([v,l,c])=>`<div class="metric"><div class="metric-val" style="color:${c}">${v}</div><div class="metric-lbl">${l}</div></div>`).join('');
+}
+
+function resetInterview(){
+  iPhase='setup';curQ=0;iTimer=0;iScores=[];
+  document.getElementById('interview-complete').style.display='none';
+  document.getElementById('interview-setup').style.display='block';
+}
+
+function finalAuth(){
+  const rv=String(10+Math.floor(Math.random()*90));
+  return`<div class="grid-2">
+<div class="card">
+<div id="auth-tabs" class="tab-row"><button class="tab active" onclick="switchAuthTab('login')">تسجيل الدخول</button><button class="tab" onclick="switchAuthTab('register')">حساب جديد</button><button class="tab" onclick="switchAuthTab('nafath')">🇸🇦 نفاذ</button></div>
+<div id="auth-msg" style="display:none"></div>
+<div id="auth-form-content"></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div class="card"><div class="section-label">JWT Security Architecture</div>
+${[['🔑','Access Token','30 دقيقة · HS256 · JTI blacklist'],['🔄','Refresh Token','7/30 يوم · Redis rotation'],['🛡️','Brute Force Guard','5 محاولات / 5 دقائق / IP'],['🔐','Password Hash','bcrypt cost=12 · timing-safe']].map(([i,t,d])=>`<div style="display:flex;gap:10px;padding:8px 10px;border-radius:var(--border-radius-md);background:var(--color-background-secondary);margin-bottom:6px"><span style="font-size:16px">${i}</span><div><div style="font-size:12px;font-weight:500">${t}</div><div style="font-size:11px;color:var(--color-text-secondary)">${d}</div></div></div>`).join('')}
+</div>
+<div class="card"><div class="section-label">Rate Limit Rules</div>
+${[['/auth/login','5 / 5min','#EF4444'],['/auth/register','3 / 1hr','#F59E0B'],['/resumes/upload','10 / 1hr','#3B82F6'],['/skills/analyze','20 / 1hr','#22D3EE'],['default API','200 / min','#888']].map(([p,l,c])=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary)"><span style="font-size:11px;font-family:var(--font-mono)">${p}</span><span style="font-size:11px;font-weight:500;color:${c}">${l}</span></div>`).join('')}
+</div>
+</div>
+</div>
+<script>
+const nafathRV='${rv}';
+switchAuthTab('login');
+<\/script>`;}
+
+function switchAuthTab(tab){
+  document.querySelectorAll('#auth-tabs .tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  const el=document.getElementById('auth-form-content');
+  const msg=document.getElementById('auth-msg');if(msg)msg.style.display='none';
+  if(tab==='login') el.innerHTML=`<div style="display:flex;flex-direction:column;gap:10px"><div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:5px">البريد الإلكتروني</div><input class="input-field" type="email" placeholder="user@example.com" id="auth-email"></div><div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:5px">كلمة المرور</div><input class="input-field" type="password" placeholder="••••••••" id="auth-pass"></div><button class="btn-accent" onclick="doAuthAction('login')" style="width:100%">تسجيل الدخول</button></div>`;
+  if(tab==='register') el.innerHTML=`<div style="display:flex;flex-direction:column;gap:10px"><input class="input-field" placeholder="الاسم الكامل"><input class="input-field" type="email" placeholder="البريد الإلكتروني"><input class="input-field" type="password" placeholder="كلمة المرور (8+ حروف)" id="auth-reg-pass" oninput="checkPw(this.value)"><div id="pw-checks" style="font-size:11px;color:var(--color-text-secondary)"></div><button class="btn-accent" onclick="doAuthAction('register')" style="width:100%">إنشاء الحساب</button></div>`;
+  if(tab==='nafath') el.innerHTML=`<div style="padding:12px;border-radius:var(--border-radius-md);background:var(--color-background-success);margin-bottom:12px"><div style="font-size:13px;font-weight:500;color:var(--color-text-success);margin-bottom:4px">🔐 التحقق عبر نفاذ</div><div style="font-size:12px;color:var(--color-text-success)">تحقق من هويتك الوطنية باستخدام تطبيق نفاذ المعتمد من وزارة الداخلية.</div></div><div style="display:flex;flex-direction:column;gap:8px"><input class="input-field" placeholder="رقم الهوية الوطنية (10 أرقام)" style="font-family:var(--font-mono)"><button class="btn-accent" onclick="doNafath()" style="width:100%">إرسال طلب التحقق → نفاذ</button></div><div id="nafath-otp" style="display:none;text-align:center;padding:20px 0"><div style="font-size:36px;font-weight:500;color:#00C9A0;letter-spacing:6px;font-family:var(--font-mono);margin-bottom:10px">${typeof nafathRV!=='undefined'?nafathRV:'42'}</div><div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:14px">افتح تطبيق نفاذ وأدخل هذا الرقم</div><button class="btn-accent" onclick="confirmNafath()">تأكيد القبول في نفاذ ✓</button></div>`;
+}
+
+function checkPw(v){const el=document.getElementById('pw-checks');if(!el)return;el.innerHTML=[[v.length>=8,'8+ أحرف'],[/[A-Z]/.test(v),'حرف كبير'],[/\d/.test(v),'رقم'],[/[!@#$%]/.test(v),'رمز خاص']].map(([ok,l])=>`<span style="color:${ok?'#10B981':'var(--color-text-tertiary)'};margin-left:10px">${ok?'✓':'✗'} ${l}</span>`).join('');}
+
+async function doAuthAction(type){
+  const msg=document.getElementById('auth-msg');if(!msg)return;
+  msg.style.display='none';
+  await new Promise(r=>setTimeout(r,1500));
+  msg.className='msg-success';
+  msg.textContent=type==='login'?'✅ تم تسجيل الدخول بنجاح':'✅ تم إنشاء الحساب — فحص بريدك للتحقق';
+  msg.style.display='block';
+}
+
+async function doNafath(){const el=document.getElementById('nafath-otp');if(el)el.style.display='block';}
+async function confirmNafath(){
+  const msg=document.getElementById('auth-msg');if(!msg)return;
+  await new Promise(r=>setTimeout(r,1500));
+  msg.className='msg-success';msg.textContent='✅ تم التحقق من هويتك عبر نفاذ 🎉';msg.style.display='block';
+  const el=document.getElementById('nafath-otp');if(el)el.style.display='none';
+}
+
+let ciRunning=false,ciJobs={};
+const CI_JOBS=[{id:'lint',n:'Lint & Security',dur:8},{id:'test-be',n:'Backend Tests',dur:18},{id:'test-fe',n:'Frontend Tests',dur:12},{id:'test-sc',n:'Solidity Tests',dur:10},{id:'build',n:'Build Images',dur:25},{id:'staging',n:'Deploy Staging',dur:15},{id:'prod',n:'Deploy Production',dur:12}];
+const CI_LOGS=['⬢ Wijha CI/CD Pipeline v2.0 — Starting','📦 Checkout: refs/heads/main @ abc1234','🔍 Ruff lint: ✓ 243 files checked — clean','🔒 Bandit: ✓ no high-severity issues','🧪 pytest: ✓ 147 tests passed · Coverage: 82.3%','⚛️ Vitest: ✓ 89 tests passed · Coverage: 79.1%','◆ Hardhat: ✓ 23 contract tests · Gas: 245K','🐳 Multi-arch build → ghcr.io/wijha pushed','🚧 Staging deployed · Health check → 200 OK','✓ Smoke tests passed','🚀 Production: blue/green rolling restart','✓ Production health check → 200 OK','💬 Slack notification sent','🎉 Pipeline complete! Duration: 4m 38s'];
+
+function finalCICD(){return`
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+<div><div class="section-label">GitHub Actions — 7 Jobs</div><div style="font-size:12px;color:var(--color-text-secondary)">Lint → Test → Build → Staging → Production</div></div>
+<button id="ci-btn" class="btn-accent" onclick="runCI()">▶ تشغيل Pipeline</button>
+</div>
+<div class="grid-2">
+<div class="card">
+<div class="section-label">Job Graph</div>
+<div id="ci-jobs">
+${CI_JOBS.map(j=>`<div class="job-item" id="job-${j.id}"><div class="job-dot" id="dot-${j.id}" style="color:var(--color-text-tertiary)">○</div><div style="flex:1"><div style="font-size:12px;font-weight:500">${j.n}</div></div><div style="font-size:10px;color:var(--color-text-tertiary);font-family:var(--font-mono)">~${j.dur}s</div></div>`).join('')}
+</div>
+</div>
+<div class="terminal" id="ci-terminal">
+<div class="terminal-log">$ اضغط "تشغيل Pipeline" للبدء...</div>
+</div>
+</div>`;}
+
+async function runCI(){
+  if(ciRunning)return;
+  ciRunning=true;
+  const btn=document.getElementById('ci-btn');if(btn){btn.disabled=true;btn.textContent='جارٍ التشغيل...';}
+  const terminal=document.getElementById('ci-terminal');
+  if(terminal)terminal.innerHTML='';
+  CI_JOBS.forEach(j=>{const el=document.getElementById('job-'+j.id);const d=document.getElementById('dot-'+j.id);if(el){el.className='job-item';el.style.borderColor='';el.style.background='';}if(d){d.textContent='○';d.style.color='var(--color-text-tertiary)';}});
+  for(let i=0;i<CI_JOBS.length;i++){
+    const job=CI_JOBS[i];
+    const el=document.getElementById('job-'+job.id);const d=document.getElementById('dot-'+job.id);
+    if(el){el.className='job-item running';}
+    if(d){d.textContent='⟳';d.style.color='#F59E0B';}
+    const logIdx=i*2;
+    if(terminal&&CI_LOGS[logIdx]){const div=document.createElement('div');div.className='terminal-log';div.textContent=CI_LOGS[logIdx];terminal.appendChild(div);terminal.scrollTop=terminal.scrollHeight;}
+    await new Promise(r=>setTimeout(r,450));
+    if(terminal&&CI_LOGS[logIdx+1]){const div=document.createElement('div');div.className='terminal-ok';div.textContent=CI_LOGS[logIdx+1];terminal.appendChild(div);terminal.scrollTop=terminal.scrollHeight;}
+    await new Promise(r=>setTimeout(r,350));
+    if(el){el.className='job-item success';}
+    if(d){d.textContent='✓';d.style.color='#10B981';}
+  }
+  for(let i=CI_JOBS.length*2;i<CI_LOGS.length;i++){
+    await new Promise(r=>setTimeout(r,280));
+    if(terminal){const div=document.createElement('div');div.className=CI_LOGS[i].startsWith('🎉')?'terminal-done':CI_LOGS[i].startsWith('✓')?'terminal-ok':'terminal-log';div.textContent=CI_LOGS[i];terminal.appendChild(div);terminal.scrollTop=terminal.scrollHeight;}
+  }
+  ciRunning=false;
+  if(btn){btn.disabled=false;btn.textContent='▶ تشغيل Pipeline';}
+}
+
+// ── BUILD ALL SCREENS ──────────────────────────────────────────
+const container=document.getElementById('screens');
+SCREENS.forEach(s=>{
+  const div=document.createElement('div');
+  div.className='screen'+(s.id==='dashboard'?' active':'');
+  div.id='scr-'+s.id;
+  if(s.id==='dashboard') div.innerHTML=dashboardHTML();
+  else if(s.id==='twin') div.innerHTML=twinHTML();
+  else if(s.id==='ats') div.innerHTML=atsHTML();
+  else if(s.id==='b2b'){div.innerHTML=b2bHTML();setTimeout(()=>{document.getElementById('b2b-content').innerHTML=b2bDash();setTimeout(initB2BCharts,100);},50);}
+  else if(s.id==='trust'){div.innerHTML=trustHTML();setTimeout(()=>{document.getElementById('trust-content').innerHTML=trustCreds();},50);}
+  else if(s.id==='final'){div.innerHTML=finalHTML();setTimeout(()=>{document.getElementById('final-content').innerHTML=finalInterview();initInterview();},50);}
+  container.appendChild(div);
+});
+
+// ── INIT CHARTS ────────────────────────────────────────────────
+const isDark=matchMedia('(prefers-color-scheme: dark)').matches;
+const gridC=isDark?'rgba(255,255,255,.07)':'rgba(0,0,0,.06)';
+const tickC=isDark?'#64748B':'#9CA3AF';
+
+function initDashboardCharts(){
+  destroyChart('radarChart');
+  destroyChart('gaugeChart');
+  setTimeout(()=>{
+    const rc=document.getElementById('radarChart');
+    if(rc&&!charts.radarChart){
+      charts.radarChart=new Chart(rc,{type:'radar',data:{labels:['تقني','ذكاء ا.','سحابي','ناعمة','DevOps','بيانات'],datasets:[{label:'أنت',data:[72,28,35,78,40,55],borderColor:'#00C9A0',backgroundColor:'rgba(0,201,160,.12)',pointBackgroundColor:'#00C9A0',borderWidth:2,pointRadius:4},{label:'السوق',data:[65,55,60,70,50,58],borderColor:'#3B82F6',backgroundColor:'rgba(59,130,246,.06)',borderWidth:1.5,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{grid:{color:gridC},angleLines:{color:gridC},pointLabels:{color:tickC,font:{size:11}},ticks:{display:false}}}}});
+    }
+    const gc=document.getElementById('gaugeChart');
+    if(gc&&!charts.gaugeChart){
+      charts.gaugeChart=new Chart(gc,{type:'doughnut',data:{datasets:[{data:[67,33],backgroundColor:['#F59E0B','rgba(128,128,128,.12)'],borderWidth:0,circumference:180,rotation:-90}]},options:{responsive:true,maintainAspectRatio:false,cutout:'80%',plugins:{legend:{display:false},tooltip:{enabled:false}}}});
+    }
+  },100);
+}
+
+function initB2BCharts(){
+  destroyChart('deptChart');
+  destroyChart('nitaqatTrendChart');
+  setTimeout(()=>{
+    const dc=document.getElementById('deptChart');
+    if(dc&&!charts.deptChart){
+      charts.deptChart=new Chart(dc,{type:'bar',data:{labels:['الهندسة','العمليات','البيانات','المالية','الموارد','التسويق'],datasets:[{label:'نسبة السعودة',data:[47.2,65.4,41.2,66.7,78.6,63.6],backgroundColor:d=>[47.2,65.4,41.2,66.7,78.6,63.6].map(v=>v>=60?'#10B981':v>=50?'#F59E0B':'#EF4444'),borderRadius:4,barThickness:14}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gridC},ticks:{color:tickC,font:{size:10},callback:v=>v+'%'},max:100},y:{grid:{display:false},ticks:{color:tickC,font:{size:11}}}}}});
+    }
+    const tc=document.getElementById('nitaqatTrendChart');
+    if(tc&&!charts.nitaqatTrendChart){
+      charts.nitaqatTrendChart=new Chart(tc,{type:'line',data:{labels:['يناير','فبراير','مارس','أبريل','مايو','يونيو'],datasets:[{data:[51.2,52.1,53.0,53.8,54.6,55.3],borderColor:'#10B981',backgroundColor:'rgba(16,185,129,.1)',fill:true,tension:.4,pointRadius:4,pointBackgroundColor:'#10B981',borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:gridC},ticks:{color:tickC,font:{size:9}}},y:{grid:{color:gridC},ticks:{color:tickC,font:{size:9},callback:v=>v+'%'},min:48,max:62}}}});
+    }
+  },100);
+}
+
+setTimeout(initDashboardCharts,300);
+
+// Salary slider
+document.addEventListener('input',function(e){
+  if(e.target.id==='salarySlider'){
+    currentSalary=+e.target.value;
+    const d=document.getElementById('salaryDisplay');
+    if(d)d.textContent=currentSalary.toLocaleString('ar-SA')+' ر';
+    updateTwinKPIs();
+    initTwinChart();
+  }
+});
+</script>
